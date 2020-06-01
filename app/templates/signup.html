@@ -1,23 +1,26 @@
-{%extends "bootstrap/base.html"%}
+{%extends "base.html"%}
 {%import "bootstrap/wtf.html" as wtf%}
-{%block title%}Sign Up{%endblock%}
-
-{%block styles%}
-    {{super()}}
-    <link rel="stylesheet" href="{{url_for('.static',filename='signin.css')}}">
-{%endblock%}
+{%block title%}<title>Sign Up</title>{%endblock%}
 
 {%block content%}
     <!--the sign up page-->
+    <br>
     <div class="container">
-        <form class="form-signin" method="POST" action="/signup">
-            <h2 class="form-signin-heading">Please Sign Up</h2>
-            {{form.hidden_tag()}}
-            {{wtf.form_field(form.email)}}
-            {{wtf.form_field(form.username)}}
-            {{wtf.form_field(form.password)}}
-            <button class="btn btn-lg btn-primary btn block"
-            type="submit">Sign in</button>
-        </form>
+        <main role="main">
+            <div class="jumbotron">
+                <div class="container">
+                    <form class="form-signin" method="POST" action="/signup">
+                        <h2 class="form-signin-heading">Create a free account!</h2>
+                        <hr>
+                        {{form.hidden_tag()}}
+                        {{wtf.form_field(form.email)}}
+                        {{wtf.form_field(form.username)}}
+                        {{wtf.form_field(form.password)}}
+                        <button class="btn btn-lg btn-primary btn block"
+                        type="submit">Sign in</button>
+                    </form>
+                </div>
+            </div>
+        </main>
     </div>
 {%endblock%}

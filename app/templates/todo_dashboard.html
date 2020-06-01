@@ -1,8 +1,14 @@
-{%extends "bootstrap/base.html"%}
+{%extends "todobase.html"%}
+{%import "bootstrap/wtf.html" as wtf%}
 
-{%block title%}GlistS ToDo{%endblock%}
+{%block title%}<title>GlistS ToDo</title>{%endblock%}
 
 {%block content%}
-    <h1>Testing Todo APP, Hi {{name}}</h1>
-    <li><a href="{{url_for('logout')}}">Log Out</li>
+	<br>
+    <h1>Hi {{name}}</h1>
+    <h5>Currently it is {{time}}</h5>
+    <br><hr><br>
+    <h2>Let's get work done!</h2>
+    <br>
+    <form action='/dashboard' method='POST'>
 {%endblock%}

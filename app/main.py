@@ -17,6 +17,14 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash,check_password_hash
 #adding flask login
 from flask_login import LoginManager,UserMixin,login_user,login_required,logout_user,current_user
+#for date and time
+from datetime import datetime
+#for convertong UTC to IST
+import pytz
+
+# solving time issue
+datetime_today = datetime.now()
+date_time_india = datetime_today.astimezone(pytz.timezone('Asia/Calcutta'))
 
 #creating our app with the Flask object
 app = Flask(__name__)
@@ -24,9 +32,11 @@ app = Flask(__name__)
 app.config['SECRET_KEY']='ThisisGlistSSecretKey!'
 #configuring the sqlite 3 database
 app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///database.db'
+app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///todo.db'
 Bootstrap(app)
-#linking the database with the app
+#linking the both the databases with the app
 db=SQLAlchemy(app)
+dbtodo=SQLAlchemy(app)
 #creating login manager
 login_manager=LoginManager()
 #instializing the login manager to the app
@@ -37,7 +47,7 @@ login_manager.login_view='login_page'
 #adding the database
 #user database
 class User(UserMixin,db.Model):
-    #prmary key of all the entries in the database
+    #primary key of all the entries in the database
     id=db.Column(db.Integer,primary_key=True)
     #username->max length=20, username should be unique
     username=db.Column(db.String(20),unique=True)
@@ -45,7 +55,18 @@ class User(UserMixin,db.Model):
     email=db.Column(db.String(50),unique=True)
     #password->max length=80
     password=db.Column(db.String(80))
-    
+
+#todo database
+class todo(UserMixin,dbtodo.Model):
+    #primary key of all the entries in the database
+    id = dbtodo.Column(dbtodo.Integer, primary_key=True)
+    #todo item for the todo list
+    item = dbtodo.Column(dbtodo.Text, nullable=False)
+
+    def __repr__(self, item:str):
+        #return 'To Do List ' + str(self.id)
+        self.item=item
+
 #function for login manager
 @login_manager.user_loader
 def load_user(user_id):
@@ -91,7 +112,7 @@ def signup_page():
         new_user=User(username=form.username.data,email=form.email.data,password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
-        return "<h1>New User has been Created!</h1>"
+        return redirect(url_for('login_page'))
     return render_template('signup.html', form=form)
 
 #Log-in Page     
@@ -112,16 +133,18 @@ def login_page():
                 #before redirecting to dashboard make sure to be logged in
                 login_user(user,remember=form.remember.data)
                 return redirect(url_for('todo_dashboard'))
-        return "<h1>Invalid Username or Password</h1>"
+        return render_template('invalid.html')
     return render_template('login.html',form=form)
 
 #Dashboard where the todo-app starts for each user
-@app.route('/dashboard')
+@app.route('/dashboard',methods=['GET','POST'])
 #not being able to access dashboard always
 #have to login/signup to access dashboard
 @login_required
 def todo_dashboard():
-    return render_template('todo_dashboard.html',name=current_user.username)
+    to_do=todo()
+    return render_template('todo_dashboard.html',name=current_user.username, time=date_time_india)
+
 #logout facitlity
 @app.route('/login')
 @login_required
@@ -129,6 +152,12 @@ def logout():
     logout_user()
     return redirect(url_for('home_page'))
 
+#about the company page
+@app.route('/about')
+def about():
+    return render_template('about.html')
+   
+#main method for running app
 if "__main__"==__name__:
     app.run(debug=True)
     

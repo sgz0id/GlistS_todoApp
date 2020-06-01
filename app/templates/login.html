@@ -1,26 +1,36 @@
-{% extends "bootstrap/base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{%import "bootstrap/wtf.html" as wtf%}
 
-{% block title %}Login{% endblock  %}
+{% block title %}<title>Login</title>{% endblock  %}
 
-{% block styles %}
-    {{super()}}
-    <link rel="stylesheet" href="{{url_for('.static', filename='signin.css')}}">
-{% endblock %}
 
 {% block content %}
 <!--the body goes here-->
     <!--this is the form for the sign in page-->
+    <br>
     <div class="container">
-        <form class="signin-form" method="POST" action="/login">
-            <h2 class="form-signin-heading">Please Sign in</h2>
-            <!--this is the hidden tag for flask wt form-->
-            {{ form.hidden_tag() }}
-            {{ wtf.form_field(form.username) }}
-            {{ wtf.form_field(form.password) }}
-            {{ wtf.form_field(form.remember) }}
-            <button class="btn btn-lg btn-primary btn block"
-            type="submit">Log in</button>
-        </form>
+        <main role="main">
+            <div class="jumbotron">
+                <div class="container">
+                    <form class="signin-form" method="POST" action="/login">
+                        <h2 class="form-signin-heading">Log In to an existing account</h2>
+                        <hr>
+                        <!--this is the hidden tag for flask wt form-->
+                        {{ form.hidden_tag() }}
+                        {{ wtf.form_field(form.username) }}
+                        {{ wtf.form_field(form.password) }}
+                        {{ wtf.form_field(form.remember) }}
+                        <button class="btn btn-lg btn-info btn block"type="submit">Log in</button>
+                    </form>
+                    <hr><br>
+                    <p>
+                        Don't have an account, go create one!
+                        <br><br>
+                        <a class="btn btn-outline-primary" href="/signup"
+                        role="button">Sign Up &raquo;</a>
+                    </p>
+                </div>
+            </div>
+        </main>
     </div>
 {% endblock %}

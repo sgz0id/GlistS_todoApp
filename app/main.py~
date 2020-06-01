@@ -112,7 +112,7 @@ def login_page():
                 #before redirecting to dashboard make sure to be logged in
                 login_user(user,remember=form.remember.data)
                 return redirect(url_for('todo_dashboard'))
-        return "<h1>Invalid Username or Password</h1>"
+        return render_template('invalid.html')
     return render_template('login.html',form=form)
 
 #Dashboard where the todo-app starts for each user
@@ -129,6 +129,12 @@ def logout():
     logout_user()
     return redirect(url_for('home_page'))
 
+#about the company page
+@app.route('/about')
+def about():
+    return render_template('about.html')
+   
+#main method for running app
 if "__main__"==__name__:
     app.run(debug=True)
     

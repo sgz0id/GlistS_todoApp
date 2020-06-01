@@ -1,0 +1,31 @@
+{%extends "base.html"%}
+<!--head-->
+{%block title%}<title>GlistS</title>{%endblock%}
+
+{%block content%}
+    <br>
+    <br>
+    <!--welcome screen-->
+    <div class="container">
+      <main role="main">
+          <div class="jumbotron" style="background-color: #ffcdd2">
+            <div class="col-sm-8 mx-auto">
+              <h1>Invalid Username or Password</h1>
+              <p>
+                Try logging in again with correct credentials
+                <br><br>
+                <a class="btn btn-primary" href="/login"
+                role="button">Log In &raquo;</a>
+              </p>
+              <p>
+                New here, create and account by signing up!
+                <br><br>
+                <a class="btn btn-secondary" href="/signup"
+                role="button">Sign Up &raquo;</a>
+              </p>
+            </div>
+        </div>
+      </main>
+    </div>
+
+{%endblock%}  
